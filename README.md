@@ -1,0 +1,37 @@
+# Ansible-Role: acr-ansible-auditbeat
+
+AIT-CyberRange: Installs and configures auditbeat in the AIT CyberRange. 
+
+
+## Requirements
+
+- Debian or Ubuntu
+
+## Role Variables
+
+```yaml
+auditbeat_version: 9.0.2
+auditbeat_modules: []
+auditbeat_inputs: []
+auditbeat_output_conf: {}
+
+auditbeat_setup_conf:
+    setup.kibana:
+
+auditbeat_processors: []
+
+auditbeat_ilm_policy_max_age: '1d'
+auditbeat_ilm_policy_max_size: '25gb'
+auditbeat_ilm_policy_delete: true
+auditbeat_ilm_policy_delete_min_age: '5d'
+
+auditbeat_setup: false
+```
+
+## License
+
+GPL-3.0
+
+## Author
+
+- Lenhard Reuter
