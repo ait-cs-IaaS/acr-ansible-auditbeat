@@ -1,0 +1,33 @@
+---
+
+- name: Restart auditbeat
+  become: true
+  ansible.builtin.systemd_service:
+    name: auditbeat
+    state: restarted
+
+- name: Check if auditbeat setup marker exists
+  become: true
+  ansible.builtin.stat:
+    path: /etc/auditbeat/.setup_done
+  register: auditbeat_setup_marker
+
+- name: Run auditbeat setup (only once)
+  become: true
+  ansible.builtin.command: auditbeat setup
+  args:
+    chdir: /etc/auditbeat
+  register: result
+  retries: 12
+  delay: 10
+  until: result.rc == 0
+  when:
+    - auditbeat_setup
+    - not auditbeat_setup_marker.stat.exists
+
+- name: Create setup marker file
+  become: true
+  ansible.builtin.file:
+    path: /etc/auditbeat/.setup_done
+    state: touch
+  
